@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, NavDropdown, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import logo from '../../assets/StickLogo.webp';
@@ -39,18 +39,28 @@ const Header = () => {
             <Nav.Link href="/">HOME</Nav.Link>
 
             <NavDropdown title="CATEGORIES" id="categories-dropdown" className="custom-dropdown">
-              {isLoading ? (
-                <NavDropdown.Item disabled>
-                  <Spinner animation="border" size="sm" /> Loading...
+                {/* Lien vers tous les produits */}
+                <NavDropdown.Item href="/products">
+                  All
                 </NavDropdown.Item>
-              ) : (
-                categories.map((cat) => (
-                  <NavDropdown.Item key={cat._id} href={`/products?category=${encodeURIComponent(cat._id)}`}>
-                    {cat.name}
+
+                {/* Chargement */}
+                {isLoading ? (
+                  <NavDropdown.Item disabled>
+                    <Spinner animation="border" size="sm" /> Loading...
                   </NavDropdown.Item>
-                ))
-              )}
-            </NavDropdown>
+                ) : (
+                  // Catégories dynamiques
+                  categories.map((cat) => (
+                    <NavDropdown.Item
+                      key={cat._id}
+                      href={`/products?category=${encodeURIComponent(cat._id)}`}
+                    >
+                      {cat.name}
+                    </NavDropdown.Item>
+                  ))
+                )}
+              </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>

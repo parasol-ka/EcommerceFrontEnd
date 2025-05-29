@@ -1,5 +1,4 @@
 /* NAVIGATION */
-
 .border-pink {
   border: 2px solid #c04381 !important; 
 }
@@ -17,7 +16,6 @@
 }
 
 /* BANNER   */
-
 .banner-card {
   background-color: #fff0f5;
   border-radius: 12px;
@@ -30,7 +28,6 @@
 }
 
 /* CATEGORIES */
-
 .category-img {
   height: 220px;
   object-fit: contain;
@@ -46,7 +43,14 @@
   transform: scale(1.03);
 }
 
-/* PRODUCT */
+/* PRODUCT INPUT*/
+.custom-input-group {
+  width: 90% !important; 
+  margin: 0 auto !important;
+}
+.custom-text {
+  text-align: center !important;
+}
 .custom-button {
   color: black !important;
   border-color: #c04381 !important;
@@ -55,8 +59,17 @@
   background-color: #c04381 !important;
   color: white !important;
 }
+
 .custom-input:focus {
   outline: none !important;
   box-shadow: 0 0 0 0.2rem rgba(232, 62, 140, 0.25) !important;
   border-color: #e83e8c !important;
+}
+
+/* PRODUCT CARD */
+.hover-border {
+  transition: border-color 0.1s ease-in-out;
+}
+.hover-border:hover {
+  border: 1px solid #c04381 !important;
 }

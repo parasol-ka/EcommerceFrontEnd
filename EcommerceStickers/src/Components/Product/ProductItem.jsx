@@ -1,16 +1,18 @@
-import React from 'react';
 import { Card } from 'react-bootstrap';
 import ProductItemForm from './ProductItemForm';
+import { Link } from 'react-router-dom';
 
 const ProductItem = ({ id, name, price, image, stock}) => {
   return (
-    <Card className="h-100 text-center shadow-sm">
-      <Card.Img variant="top" src={image} alt={name} style={{ height: 200, objectFit: 'contain' }} />
-      <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text className="text-muted">€{price.toFixed(2)}</Card.Text>
-        <ProductItemForm productId={id} maxQuantity={stock} />
-      </Card.Body>
+    <Card className="h-100 text-center shadow-sm hover-border">
+      <Link to={`/product/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Card.Img variant="top" src={image} alt={name} style={{ height: 200, objectFit: 'contain' }} />
+        <Card.Body>
+          <Card.Title>{name}</Card.Title>
+          <Card.Text className="text-muted">€{price.toFixed(2)}</Card.Text>
+        </Card.Body>
+      </Link>
+      <ProductItemForm productId={id} maxQuantity={stock} />
     </Card>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { InputGroup, FormControl, Button, FormText } from 'react-bootstrap';
 
 const ProductItemForm = ({ productId, maxQuantity }) => {
@@ -15,7 +15,7 @@ const ProductItemForm = ({ productId, maxQuantity }) => {
 
   return (
     <>
-      <InputGroup >
+      <InputGroup className='custom-input-group'>
         <FormControl
           className="custom-input"
           type="number"
@@ -32,9 +32,8 @@ const ProductItemForm = ({ productId, maxQuantity }) => {
           Add
         </Button>
       </InputGroup>
-
-      {/* Affichage en dessous */}
-      <FormText className="text-muted d-block mt-1">
+      
+      <FormText className="text-muted d-block mt-1 custom-text">
         In stock: {maxQuantity}
       </FormText>
     </>
