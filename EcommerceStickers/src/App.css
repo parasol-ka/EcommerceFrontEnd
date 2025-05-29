@@ -1,0 +1,62 @@
+/* NAVIGATION */
+
+.border-pink {
+  border: 2px solid #c04381 !important; 
+}
+.navbar {
+  font-family: 'Trebuchet MS', cursive;
+  color: black !important;
+}
+.nav-link:hover {
+  color: #c04381 !important;
+  transition: all 0.2s ease-in-out;
+}
+.custom-dropdown .dropdown-item:hover {
+  background-color: #ffe4f0 !important; 
+  color: #c04381 !important; 
+}
+
+/* BANNER   */
+
+.banner-card {
+  background-color: #fff0f5;
+  border-radius: 12px;
+}
+.text-pink {
+  color: #e83e8c;
+}
+.custom-shadow {
+  box-shadow: 0 0 12px rgba(133, 4, 69, 0.4);
+}
+
+/* CATEGORIES */
+
+.category-img {
+  height: 220px;
+  object-fit: contain;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.text-pink {
+  color: #e83e8c;
+}
+.category-card {
+  transition: transform 0.2s ease-in-out;
+}
+.category-card:hover {
+  transform: scale(1.03);
+}
+
+/* PRODUCT */
+.custom-button {
+  color: black !important;
+  border-color: #c04381 !important;
+}
+.custom-button:hover {
+  background-color: #c04381 !important;
+  color: white !important;
+}
+.custom-input:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.2rem rgba(232, 62, 140, 0.25) !important;
+  border-color: #e83e8c !important;
+}
