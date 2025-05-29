@@ -2,23 +2,25 @@ import { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, NavDropdown, Spinner, Button } from 'react-bootstrap';
 import axios from 'axios';
 import logo from '../../assets/StickLogo.webp';
-import LoginPopUp from '../PopUps/LoginPopUp'; // ✔️ Ton vrai fichier pop-up
+import LoginPopUp from '../Auth/LoginPopUp';
+import { useAuth } from '../Auth/AuthContext';
 
 const Header = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAuth, setShowAuth] = useState(false);
+  const { user, logout } = useAuth();
 
   const API_URL = 'http://localhost:3000/api/category';
 
   useEffect(() => {
     axios.get(API_URL)
-      .then(response => {
-        setCategories(response.data.categories);
+      .then((res) => {
+        setCategories(res.data.categories);
         setIsLoading(false);
       })
-      .catch(error => {
-        console.error('Erreur lors du chargement des catégories :', error);
+      .catch((err) => {
+        console.error('Erreur lors du chargement des catégories :', err);
         setIsLoading(false);
       });
   }, []);
@@ -60,17 +62,32 @@ const Header = () => {
               </NavDropdown>
             </Nav>
 
-            <Nav className="ms-auto">
-              <Button variant="outline-primary" size="sm" onClick={() => setShowAuth(true)}>
-                Sign Up / Log In
-              </Button>
+            <Nav className="ms-auto align-items-center">
+              {user ? (
+                <>
+                  <span className="me-2">👋 Hello, {user.username}</span>
+                  <Button size="sm" variant="outline-secondary" onClick={logout}>
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button size="sm" variant="outline-primary" onClick={() => setShowAuth(true)}>
+                  Sign Up / Log In
+                </Button>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
 
-      {/* ✅ Ton composant modal affiché si showAuth est true */}
-      <LoginPopUp show={showAuth} handleClose={() => setShowAuth(false)} />
+      <LoginPopUp
+  show={showAuth}
+  handleClose={() => setShowAuth(false)}
+  onLoginSuccess={() => {
+    setShowAuth(false);
+  }}
+/>
+
     </>
   );
 };
