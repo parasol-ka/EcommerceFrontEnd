@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap';
 import ProductItemForm from './ProductItemForm';
 import { Link } from 'react-router-dom';
 
-const ProductItem = ({ id, name, price, image, stock}) => {
+const ProductItem = ({ id, name, price, image, stock, colors, sizes }) => {
   return (
     <Card className="h-100 text-center shadow-sm hover-border">
       <Link to={`/product/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -12,7 +12,7 @@ const ProductItem = ({ id, name, price, image, stock}) => {
           <Card.Text className="text-muted">€{price.toFixed(2)}</Card.Text>
         </Card.Body>
       </Link>
-      <ProductItemForm productId={id} maxQuantity={stock} />
+      <ProductItemForm productId={id} maxQuantity={stock} colors={colors} sizes={sizes} />
     </Card>
   );
 };

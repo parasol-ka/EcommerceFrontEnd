@@ -12,24 +12,25 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   const fetchCart = async () => {
-    if (!user) return;
-    setLoading(true);
-    try {
-      const res = await axios.get('http://localhost:3000/api/cart', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setCart(res.data.cartItems);
-    } catch (err) {
-      console.error('Error fetching cart:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!user) return;
+  setLoading(true);
+  try {
+    const res = await axios.get('http://localhost:3000/api/cart', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setCart(res.data.cart); // 👈 ici on garde tout (items, totalPrice, etc.)
+  } catch (err) {
+    console.error('Error fetching cart:', err);
+    setCart(null); // en cas d'erreur, on nettoie
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const addToCart = async (productId, quantity) => {
+  const addToCart = async (productId, quantity, selectedColor, selectedSize) => {
     if (!user) return false; // utilisé pour déclencher la pop-up
     try {
-      await axios.post('http://localhost:3000/api/cart', { productId, quantity }, {
+      await axios.post('http://localhost:3000/api/cart', { productId, quantity, selectedColor, selectedSize }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchCart();

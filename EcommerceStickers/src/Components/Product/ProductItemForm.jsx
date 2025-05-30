@@ -1,8 +1,16 @@
 import { useState } from 'react';
-import { InputGroup, FormControl, Button, FormText } from 'react-bootstrap';
+import { InputGroup, FormControl, Button, FormText, Alert } from 'react-bootstrap';
+import { useAuth } from '../Auth/AuthContext';
+import { useCart } from '../Cart/CartContext';
+import { useFloatingAlert } from '../Shared/FloatingAlertContext';
 
-const ProductItemForm = ({ productId, maxQuantity }) => {
+const ProductItemForm = ({ productId, maxQuantity, colors, sizes }) => {
   const [amount, setAmount] = useState(1);
+  const { user } = useAuth();
+  const { addToCart } = useCart();
+  const { showAlert } = useFloatingAlert();
+  const selectedColor = colors?.[0]?._id;
+  const selectedSize = sizes?.[0]?._id;
 
   const handleChange = (e) => {
     const value = Math.min(Math.max(+e.target.value, 1), maxQuantity);
@@ -16,8 +24,10 @@ const ProductItemForm = ({ productId, maxQuantity }) => {
       return;
     }
 
-  const success = await addToCart(productId, amount);
-    if (success) alert('Added to cart!');
+  const success = await addToCart(productId, amount, selectedColor, selectedSize);
+    if (success) {
+      showAlert('🛒 Product added to cart!', 'success');
+    }
   };
 
   return (

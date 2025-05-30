@@ -83,7 +83,7 @@ const ProductDetail = () => {
 
           {/* Formulaire d’ajout au panier */}
           <div >
-            <ProductItemForm productId={product._id} maxQuantity={product.quantity} />
+            <ProductItemForm productId={product._id} maxQuantity={product.quantity} colors={product.colors} sizes={product.sizes} />
           </div>
         </Col>
       </Row>

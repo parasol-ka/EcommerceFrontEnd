@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Row, Col } from 'react-bootstrap';
 import ProductItem from './ProductItem';
 
@@ -12,7 +12,9 @@ const Products = ({ products }) => {
             name={product.name}
             price={product.price}
             image={product.mainImage}
-            stock={product.quantity}
+            stock={product.quantity} 
+            colors={product.colors} 
+            sizes={product.sizes}
           />
         </Col>
       ))}

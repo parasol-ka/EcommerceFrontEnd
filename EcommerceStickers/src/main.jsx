@@ -5,15 +5,18 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './Components/Auth/AuthContext'; 
 import { CartProvider } from './Components/Cart/CartContext';
+import { FloatingAlertProvider } from './Components/Shared/FloatingAlertContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <CartProvider>
-           <App />  
-        </CartProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <FloatingAlertProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </FloatingAlertProvider>
   </React.StrictMode>
 );
