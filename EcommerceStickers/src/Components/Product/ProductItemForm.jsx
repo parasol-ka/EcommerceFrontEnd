@@ -9,8 +9,15 @@ const ProductItemForm = ({ productId, maxQuantity }) => {
     setAmount(value);
   };
 
-  const handleAdd = () => {
-    console.log(`Add ${amount} of product ${productId}`);
+  const handleAdd = async () => {
+    if (!user) {
+      // Afficher modal ici si non connecté (à ajuster avec contexte global ou props)
+      alert("Please log in to add to cart.");
+      return;
+    }
+
+  const success = await addToCart(productId, amount);
+    if (success) alert('Added to cart!');
   };
 
   return (

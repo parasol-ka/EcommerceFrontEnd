@@ -6,6 +6,7 @@ import CategoriesOverview from './Components/Layout/CategoriesOverview';
 import ProductListPage from './Components/Product/ProductListPage';
 import ProductDetail from './Components/Product/ProductDetail';
 
+
 function App() {
   return (
     <>

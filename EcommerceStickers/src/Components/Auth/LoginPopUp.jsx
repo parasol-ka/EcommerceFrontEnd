@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
@@ -15,7 +15,22 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
     username: '', name: '', email: '', password: '', passwordConfirm: '',
     phone: '', address: ''
   });
-
+  useEffect(() => {
+  if (show) {
+    setFormData({
+      username: '',
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      phone: '',
+      address: ''
+    });
+    setError(null);
+    setSuccess(null);
+    setIsLogin(true);
+  }
+}, [show]);
   const url = 'https://res.cloudinary.com/dxxpja0jo/image/upload/v1748548762/default-user_htxiic.png';
 
 
@@ -29,6 +44,8 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
     setError(null);
     setSuccess(null);
 
+    
+
     try {
       if (isLogin) {
         // 🔐 LOGIN
@@ -36,8 +53,9 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
           email: formData.email,
           password: formData.password
         });
+        console.log('Login response:', res.data); 
 
-        login(res.data.user); // ✅ met à jour AuthContext
+        login(res.data.user, res.data.tokens.accessToken); // ✅ met à jour AuthContext
         setSuccess('Logged in!');
         onLoginSuccess?.(); // ou redirection
       } else {
@@ -84,49 +102,51 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
         <Form onSubmit={handleSubmit}>
           {!isLogin && (
             <>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-2 custom-input-group">
                 <Form.Label>Username</Form.Label>
-                <Form.Control name="username" value={formData.username} onChange={handleChange} required />
+                <Form.Control className='custom-input' name="username" value={formData.username} onChange={handleChange} required />
               </Form.Group>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-2 custom-input-group">
                 <Form.Label>Name</Form.Label>
-                <Form.Control name="name" value={formData.name} onChange={handleChange} required />
+                <Form.Control className='custom-input' name="name" value={formData.name} onChange={handleChange} required />
               </Form.Group>
             </>
           )}
 
-          <Form.Group className="mb-2">
+          <Form.Group className="mb-2 custom-input-group">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+            <Form.Control className='custom-input' type="email" name="email" value={formData.email} onChange={handleChange} required />
           </Form.Group>
 
-          <Form.Group className="mb-2">
+          <Form.Group className="mb-2 custom-input-group">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" name="password" value={formData.password} onChange={handleChange} required />
+            <Form.Control className='custom-input' type="password" name="password" value={formData.password} onChange={handleChange} required />
           </Form.Group>
 
           {!isLogin && (
             <>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-2 custom-input-group">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleChange} required />
+                <Form.Control className='custom-input' type="password" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleChange} required />
               </Form.Group>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-2 custom-input-group">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control name="phone" value={formData.phone} onChange={handleChange} required />
+                <Form.Control className='custom-input' name="phone" value={formData.phone} onChange={handleChange} required />
               </Form.Group>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-2 custom-input-group">
                 <Form.Label>Address</Form.Label>
-                <Form.Control name="address" value={formData.address} onChange={handleChange} required />
+                <Form.Control className='custom-input' name="address" value={formData.address} onChange={handleChange} required />
               </Form.Group>
             </>
           )}
 
           <div className="text-end mt-3">
-            <Button variant="secondary" onClick={handleClose} className="me-2">
-              Cancel
+            <Button variant="secondary" onClick={() => {
+                handleClose();
+              }} className="me-2">
+                Cancel
             </Button>
-            <Button type="submit" variant="primary" disabled={loading}>
+            <Button type="submit" className='custom-main-button custom-button' variant="primary" disabled={loading}>
               {loading ? <Spinner size="sm" animation="border" /> : isLogin ? 'Login' : 'Register'}
             </Button>
           </div>
@@ -135,7 +155,7 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
         <div className="text-center mt-3">
           <small>
             {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
-            <Button variant="link" size="sm" onClick={() => setIsLogin(!isLogin)}>
+            <Button variant="link" size="sm" style={{ color: 'hotpink' }}  onClick={() => setIsLogin(!isLogin)}>
               {isLogin ? 'Sign up' : 'Log in'}
             </Button>
           </small>

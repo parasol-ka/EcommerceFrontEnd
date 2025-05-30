@@ -51,6 +51,10 @@
 .custom-text {
   text-align: center !important;
 }
+.custom-main-button {
+  background-color: #d67eaa !important;
+  color: white !important;
+}
 .custom-button {
   color: black !important;
   border-color: #c04381 !important;

@@ -4,12 +4,16 @@ import axios from 'axios';
 import logo from '../../assets/StickLogo.webp';
 import LoginPopUp from '../Auth/LoginPopUp';
 import { useAuth } from '../Auth/AuthContext';
+import CartModal from '../Cart/Cart';
+
 
 const Header = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAuth, setShowAuth] = useState(false);
   const { user, logout } = useAuth();
+  const [showCart, setShowCart] = useState(false);
+
 
   const API_URL = 'http://localhost:3000/api/category';
 
@@ -71,10 +75,14 @@ const Header = () => {
                   </Button>
                 </>
               ) : (
-                <Button size="sm" variant="outline-primary" onClick={() => setShowAuth(true)}>
+                <Button size="sm" variant="outline-primary" className='custom-button' onClick={() => setShowAuth(true)}>
                   Sign Up / Log In
                 </Button>
               )}
+              <Button variant="outline-dark" onClick={() => setShowCart(true)} className="ms-2">
+                🛒
+              </Button>
+
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -87,6 +95,8 @@ const Header = () => {
     setShowAuth(false);
   }}
 />
+<CartModal show={showCart} handleClose={() => setShowCart(false)} />
+
 
     </>
   );

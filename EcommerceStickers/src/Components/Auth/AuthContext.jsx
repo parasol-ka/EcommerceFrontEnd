@@ -1,42 +1,61 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// Création du contexte
 export const AuthContext = createContext();
 
-// Hook pour l’utiliser facilement
 export const useAuth = () => useContext(AuthContext);
 
-// Provider global
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      return saved && saved !== 'undefined' ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
   });
 
-  const isLoggedIn = !!user;
+  const [token, setToken] = useState(() => {
+    const saved = localStorage.getItem('token');
+    return saved && saved !== 'undefined' ? saved : null;
+  });
 
-  const login = (userData) => {
+  const isLoggedIn = !!user && !!token;
+
+  const login = (userData, token) => {
     setUser(userData);
+    setToken(token);
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', token);
   };
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
-  // Synchronise si localStorage change
+  // Synchronisation locale (ex : multi-tab)
   useEffect(() => {
-    const handleStorage = () => {
-      const saved = localStorage.getItem('user');
-      setUser(saved ? JSON.parse(saved) : null);
+    const handleStorageChange = () => {
+      const savedUser = localStorage.getItem('user');
+      const savedToken = localStorage.getItem('token');
+
+      try {
+        setUser(savedUser && savedUser !== 'undefined' ? JSON.parse(savedUser) : null);
+        setToken(savedToken && savedToken !== 'undefined' ? savedToken : null);
+      } catch {
+        setUser(null);
+        setToken(null);
+      }
     };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
