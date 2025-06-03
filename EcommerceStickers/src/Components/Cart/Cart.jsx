@@ -56,14 +56,14 @@ const Cart = ({ show, handleClose }) => {
                     <Button
                       variant="outline-secondary"
                       size="sm"
-                      onClick={() => reduceOne(product?._id)}
+                      onClick={() => reduceOne(product?._id, item.selectedColor, item.selectedSize)}
                       disabled={item.totalProductQuantity === 1}
                     >–</Button>
                     <span className="mx-2">{item.totalProductQuantity}</span>
                     <Button
                       variant="outline-secondary"
                       size="sm"
-                      onClick={() => increaseOne(product?._id)}
+                      onClick={() => increaseOne(product?._id, item.selectedColor, item.selectedSize)}
                       disabled={product && item.totalProductQuantity >= product.quantity}
                     >+</Button>
                   </Col>
@@ -72,7 +72,7 @@ const Cart = ({ show, handleClose }) => {
                     <Button
                       variant="outline-danger"
                       size="sm"
-                      onClick={() => removeItem(product?._id)}
+                      onClick={() => removeItem(product?._id, item.selectedColor, item.selectedSize)}
                     >✕</Button>
                   </Col>
                 </Row>

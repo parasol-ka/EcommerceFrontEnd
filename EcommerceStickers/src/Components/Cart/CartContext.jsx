@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
   if (!user) return;
-  setLoading(true);
+  setLoading(false);
   try {
     const res = await axios.get('http://localhost:3000/api/cart', {
       headers: { Authorization: `Bearer ${token}` },
@@ -41,40 +41,61 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const increaseOne = async (productId) => {
-    await axios.patch('http://localhost:3000/api/cart/increase-one', { productId }, {
+  const increaseOne = async (productId, selectedColor, selectedSize) => {
+  try {
+    await axios.patch('http://localhost:3000/api/cart/increase-one', {
+      productId,
+      selectedColor: selectedColor?._id || selectedColor,
+      selectedSize: selectedSize?._id || selectedSize
+    }, {
       headers: { Authorization: `Bearer ${token}` },
     });
     fetchCart();
-  };
+  } catch (err) {
+    console.error('Increase one failed:', err);
+  }
+};
 
-  const reduceOne = async (productId) => {
-    await axios.patch('http://localhost:3000/api/cart/reduce-one', { productId }, {
+  const reduceOne = async (productId, selectedColor, selectedSize) => {
+    
+    console.log('REDUCE, product, color, size, token', productId, selectedColor, selectedSize, token);
+  try {
+    await axios.patch('http://localhost:3000/api/cart/reduce-one', {
+      productId,
+      selectedColor: selectedColor?._id || selectedColor,
+      selectedSize: selectedSize?._id || selectedSize
+    }, {
       headers: { Authorization: `Bearer ${token}` },
     });
     fetchCart();
-  };
+  } catch (err) {
+    console.error('Reduce one failed:', err);
+  }
+};
 
-  const removeItem = async (productId) => {
+  const removeItem = async (productId, selectedColor, selectedSize) => {
+  console.log('DELETE, product, color, size, token', productId, selectedColor, selectedSize, token);
+  try {
     await axios.delete(`http://localhost:3000/api/cart/${productId}`, {
       headers: { Authorization: `Bearer ${token}` },
+      data: {
+        selectedColor: selectedColor?._id || selectedColor,
+        selectedSize: selectedSize?._id || selectedSize
+      }
     });
     fetchCart();
-  };
+  } catch (err) {
+    console.error('Delete product failed:', err);
+  }
+};
 
-  const clearCart = async () => {
-    await axios.delete('http://localhost:3000/api/cart', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    fetchCart();
-  };
 
   useEffect(() => {
     fetchCart();
   }, [user]);
 
   return (
-    <CartContext.Provider value={{ cart, loading, addToCart, increaseOne, reduceOne, removeItem, clearCart }}>
+    <CartContext.Provider value={{ cart, loading, addToCart, increaseOne, reduceOne, removeItem }}>
       {children}
     </CartContext.Provider>
   );
