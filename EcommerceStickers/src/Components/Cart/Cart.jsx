@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button, Spinner, Row, Col, Image } from 'react-bootstrap';
 import { useCart } from '../Cart/CartContext';
 import axios from 'axios';
+import { useFloatingAlert } from '../Shared/FloatingAlertContext';
+import { useAuth } from '../Auth/AuthContext';
+
 
 const Cart = ({ show, handleClose }) => {
-  const { cart, loading, increaseOne, reduceOne, removeItem } = useCart();
+  const { cart, loading, increaseOne, reduceOne, removeItem, fetchCart } = useCart();
   const [productDetails, setProductDetails] = useState({});
+  const { showAlert } = useFloatingAlert();
+  const { token } = useAuth();
+
 
   // Récupération des détails des produits via leurs ID
   useEffect(() => {
@@ -27,6 +33,61 @@ const Cart = ({ show, handleClose }) => {
 
     if (Array.isArray(cart?.items) && cart.items.length > 0) fetchProducts();
   }, [cart]);
+
+// Fonction pour récupérer le token du seller
+const getSellerToken = async () => {
+  try {
+    const res = await axios.post('http://localhost:3000/api/auth/login', {
+      email: 'gianni.tricarico@heh.be',
+      password: 'kotik',
+    });
+    return res.data.tokens.accessToken;
+  } catch (err) {
+    console.error('Erreur lors de la connexion seller :', err);
+    return null;
+  }
+};
+
+// Fonction principale de checkout
+const handleCheckout = async () => {
+  try {
+    const sellerToken = await getSellerToken();
+    if (!sellerToken) {
+      showAlert('Impossible de récupérer le token du vendeur.', 'danger');
+      return;
+    }
+
+    for (const item of cart.items) {
+      const productId = item.product;
+      const quantityOrdered = item.totalProductQuantity;
+      const currentProduct = productDetails[productId];
+      if (!currentProduct) continue;
+
+      const newQuantity = Math.max(currentProduct.quantity - quantityOrdered, 0);
+
+      await axios.patch(`http://localhost:3000/api/product/${productId}/details`, {
+        quantity: newQuantity
+      }, {
+        headers: { Authorization: `Bearer ${sellerToken}` }
+      });
+    }
+
+    // Supprimer le panier avec le token de l'utilisateur actuel
+    await axios.delete('http://localhost:3000/api/cart', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    fetchCart();
+    showAlert('Your order has been confirmed! 🎉', 'success');
+    handleClose();
+
+  } catch (err) {
+    console.error('Checkout error:', err);
+    showAlert('Checkout failed. Please try again.', 'danger');
+  }
+};
+
+
 
   return (
     <Modal show={show} onHide={handleClose} centered size="lg">
@@ -85,7 +146,9 @@ const Cart = ({ show, handleClose }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="outline-primary" className="custom-button custom-main-button" disabled={!cart?.items?.length}>Checkout</Button>
+        <Button variant="outline-primary" className="custom-button custom-main-button" 
+        onClick={handleCheckout}
+        disabled={!cart?.items?.length}>Checkout</Button>
       </Modal.Footer>
     </Modal>
   );
