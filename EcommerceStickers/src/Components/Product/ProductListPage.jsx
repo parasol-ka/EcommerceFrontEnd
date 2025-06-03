@@ -18,7 +18,7 @@ const ProductListPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:3000/api/product', {
+      const response = await axios.get('http://localhost:3000/api/product?limit=100', {
         params: categoryId ? { category: categoryId } : {},
       });
       console.log(response.data);

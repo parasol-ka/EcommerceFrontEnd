@@ -85,7 +85,7 @@ const Cart = ({ show, handleClose }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="primary" disabled={!cart?.items?.length}>Checkout</Button>
+        <Button variant="outline-primary" className="custom-button custom-main-button" disabled={!cart?.items?.length}>Checkout</Button>
       </Modal.Footer>
     </Modal>
   );
