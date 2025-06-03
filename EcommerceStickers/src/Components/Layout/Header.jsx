@@ -5,6 +5,8 @@ import logo from '../../assets/StickLogo.webp';
 import LoginPopUp from '../Auth/LoginPopUp';
 import { useAuth } from '../Auth/AuthContext';
 import CartModal from '../Cart/Cart';
+import { useCart } from '../Cart/CartContext';
+
 
 
 const Header = () => {
@@ -13,6 +15,8 @@ const Header = () => {
   const [showAuth, setShowAuth] = useState(false);
   const { user, logout } = useAuth();
   const [showCart, setShowCart] = useState(false);
+  const { totalItems } = useCart();
+
 
 
   const API_URL = 'http://localhost:3000/api/category';
@@ -79,8 +83,12 @@ const Header = () => {
                   Sign Up / Log In
                 </Button>
               )}
-              <Button variant="outline-dark" onClick={() => setShowCart(true)} className="ms-2">
-                🛒
+              <Button variant="outline-dark" onClick={() => setShowCart(true)} className="ms-2 position-relative">
+                {totalItems > 0 && (
+                  <span className="cartIcon">
+                    {totalItems}
+                  </span>
+                )}🛒
               </Button>
 
             </Nav>

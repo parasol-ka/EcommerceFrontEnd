@@ -77,17 +77,15 @@ const handleCheckout = async () => {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    fetchCart();
     showAlert('Your order has been confirmed! 🎉', 'success');
     handleClose();
+    fetchCart();
 
   } catch (err) {
     console.error('Checkout error:', err);
     showAlert('Checkout failed. Please try again.', 'danger');
   }
 };
-
-
 
   return (
     <Modal show={show} onHide={handleClose} centered size="lg">
