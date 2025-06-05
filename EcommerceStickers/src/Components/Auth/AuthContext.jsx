@@ -1,10 +1,16 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-export const AuthContext = createContext();
+/**
+ * AuthContext exports authentication state and methods for login/logout.
+ * It stores user data and token in localStorage for persistence.
+ * Creates a context for managing user authentication state and a custom hook for easy access.
+ */
 
+export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('user');
     try {
@@ -35,12 +41,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
   };
 
-  // Synchronisation locale (ex : multi-tab)
   useEffect(() => {
     const handleStorageChange = () => {
       const savedUser = localStorage.getItem('user');
       const savedToken = localStorage.getItem('token');
-
       try {
         setUser(savedUser && savedUser !== 'undefined' ? JSON.parse(savedUser) : null);
         setToken(savedToken && savedToken !== 'undefined' ? savedToken : null);
@@ -49,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
       }
     };
-
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputGroup, FormControl, Button, FormText, Alert } from 'react-bootstrap';
+import { InputGroup, FormControl, Button, FormText } from 'react-bootstrap';
 import { useAuth } from '../Auth/AuthContext';
 import { useCart } from '../Cart/CartContext';
 import { useFloatingAlert } from '../Shared/FloatingAlertContext';
@@ -19,12 +19,10 @@ const ProductItemForm = ({ productId, maxQuantity, colors, sizes }) => {
 
   const handleAdd = async () => {
     if (!user) {
-      // Afficher modal ici si non connecté (à ajuster avec contexte global ou props)
-      alert("Please log in to add to cart.");
+      showAlert('Please log in to add to cart.', 'warning');
       return;
     }
-
-  const success = await addToCart(productId, amount, selectedColor, selectedSize);
+    const success = await addToCart(productId, amount, selectedColor, selectedSize);
     if (success) {
       showAlert('🛒 Product added to cart!', 'success');
     }
@@ -32,27 +30,35 @@ const ProductItemForm = ({ productId, maxQuantity, colors, sizes }) => {
 
   return (
     <>
-      <InputGroup className='custom-input-group'>
-        <FormControl
-          className="custom-input"
-          type="number"
-          min="1"
-          max={maxQuantity}
-          value={amount}
-          onChange={handleChange}
-        />
-        <Button
-          variant="outline-primary"
-          className="custom-button"
-          onClick={handleAdd}
-        >
-          Add
-        </Button>
-      </InputGroup>
-      
-      <FormText className="text-muted d-block mt-1 custom-text">
-        In stock: {maxQuantity}
-      </FormText>
+      {maxQuantity > 0 && (
+        <InputGroup className="custom-input-group">
+          <FormControl
+            className="custom-input"
+            type="number"
+            min="1"
+            max={maxQuantity}
+            value={amount}
+            onChange={handleChange}
+          />
+          <Button
+            variant="outline-primary"
+            className="custom-button"
+            onClick={handleAdd}
+          >
+            Add
+          </Button>
+        </InputGroup>
+      )}
+
+      {maxQuantity === 0 ? (
+        <FormText className="text-danger d-block mt-1 custom-text">
+          Out of stock
+        </FormText>
+      ) : (
+        <FormText className="text-muted d-block mt-1 custom-text">
+          In stock: {maxQuantity}
+        </FormText>
+      )}
     </>
   );
 };

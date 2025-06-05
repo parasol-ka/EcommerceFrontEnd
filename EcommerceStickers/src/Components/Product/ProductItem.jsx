@@ -2,6 +2,11 @@ import { Card } from 'react-bootstrap';
 import ProductItemForm from './ProductItemForm';
 import { Link } from 'react-router-dom';
 
+/**
+* ProductItem component displays a product card with an image, name, price
+* and a form to select quantity, color, and size.
+ */
+
 const ProductItem = ({ id, name, price, image, stock, colors, sizes }) => {
   return (
     <Card className="h-100 text-center shadow-sm hover-border">

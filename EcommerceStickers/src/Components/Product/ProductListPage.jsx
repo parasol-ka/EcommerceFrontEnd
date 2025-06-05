@@ -1,8 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { Container, Spinner, Alert } from 'react-bootstrap';
-import Products from './Product'; // le composant qui affiche la grille
+import Products from './ProductGrid'; 
+
+/**
+  ProductListPage component fetches and displays a list of products.
+  It retrieves the category from search parameters and fetches products accordingly.
+  It also fetches the category name for display the title.
+  It handles loading states and errors during the fetch operations.
+  If a category is selected, it shows products from that category; 
+  otherwise, it shows all products.
+ */
 
 const ProductListPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,8 +21,7 @@ const ProductListPage = () => {
   const [categoryName, setCategoryName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  // Récupère les produits (filtrés si categoryId)
+  
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
@@ -21,7 +29,6 @@ const ProductListPage = () => {
       const response = await axios.get('http://localhost:3000/api/product?limit=100', {
         params: categoryId ? { category: categoryId } : {},
       });
-      console.log(response.data);
       setProducts(response.data.products || []);
     } catch (err) {
       console.error(err);
@@ -30,13 +37,11 @@ const ProductListPage = () => {
     setLoading(false);
   };
 
-  // Récupère le nom de la catégorie si categoryId présent
   const fetchCategoryName = async () => {
     if (!categoryId) {
       setCategoryName('');
       return;
     }
-
     try {
       const response = await axios.get(`http://localhost:3000/api/category/${categoryId}`);
       setCategoryName(response.data.category.name || '');

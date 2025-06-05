@@ -7,6 +7,16 @@ import { AuthProvider } from './Components/Auth/AuthContext';
 import { CartProvider } from './Components/Cart/CartContext';
 import { FloatingAlertProvider } from './Components/Shared/FloatingAlertContext';
 
+/**
+ * Entry point for the React application.
+ *
+ * - Wraps the main <App /> component with context providers:
+ *   - FloatingAlertProvider: Provides floating alert context to the app.
+ *   - BrowserRouter: Enables client-side routing.
+ *   - AuthProvider: Manages authentication state.
+ *   - CartProvider: Manages shopping cart state.
+ */
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <FloatingAlertProvider>

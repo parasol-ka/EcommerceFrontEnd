@@ -1,7 +1,12 @@
 import { createContext, useContext, useState } from 'react';
 
-const FloatingAlertContext = createContext();
+/** * FloatingAlertContext provides a way to show temporary alerts
+ * at the top of the screen for user actions like adding to cart, checkout 
+ * or eventual problems by different Bootstrap alert's types.
+ * Alerts disappear after 2.5 seconds.
+ */
 
+const FloatingAlertContext = createContext();
 export const useFloatingAlert = () => useContext(FloatingAlertContext);
 
 export const FloatingAlertProvider = ({ children }) => {

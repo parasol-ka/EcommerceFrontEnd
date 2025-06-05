@@ -7,8 +7,6 @@ import { useAuth } from '../Auth/AuthContext';
 import CartModal from '../Cart/Cart';
 import { useCart } from '../Cart/CartContext';
 
-
-
 const Header = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,8 +14,6 @@ const Header = () => {
   const { user, logout } = useAuth();
   const [showCart, setShowCart] = useState(false);
   const { totalItems } = useCart();
-
-
 
   const API_URL = 'http://localhost:3000/api/category';
 
@@ -97,17 +93,17 @@ const Header = () => {
       </Navbar>
 
       <LoginPopUp
-  show={showAuth}
-  handleClose={() => setShowAuth(false)}
-  onLoginSuccess={() => {
-    setShowAuth(false);
-  }}
-/>
-<CartModal show={showCart} handleClose={() => setShowCart(false)} />
-
-
+        show={showAuth}
+        handleClose={() => setShowAuth(false)}
+        onLoginSuccess={() => {
+          setShowAuth(false);
+        }}
+      />
+      <CartModal 
+        show={showCart} 
+        handleClose={() => setShowCart(false)} 
+      />
     </>
   );
 };
-
 export default Header;

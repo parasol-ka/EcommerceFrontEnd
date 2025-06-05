@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
 import { FloatingAlertProvider, useFloatingAlert } from '../src/Components/Shared/FloatingAlertContext';
 
-// Composant test
+
 function TestComponent({ type = 'success' }) {
   const { showAlert } = useFloatingAlert();
   return (

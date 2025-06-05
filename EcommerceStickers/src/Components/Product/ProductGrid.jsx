@@ -1,6 +1,11 @@
-
 import { Row, Col } from 'react-bootstrap';
 import ProductItem from './ProductItem';
+
+/**
+  * Products component to display a list of products in a grid layout.
+  * It takes an array of product objects as a prop and maps over them to render
+  * individual ProductItem components.
+ */
 
 const Products = ({ products }) => {
   return (

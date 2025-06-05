@@ -2,8 +2,12 @@ import { createContext, useContext, useEffect, useState, useReducer } from 'reac
 import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext';
 
-const CartContext = createContext();
+/**
+ * CartContext provides a way to manage the shopping cart state
+ * and actions such as adding, removing, and updating items in the cart using API.
+ */
 
+const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const cartReducer = (state, action) => {
@@ -23,7 +27,6 @@ export const cartReducer = (state, action) => {
         0
       );
       return { ...state, totalItems: total };
-
     default:
       return state;
   }
@@ -37,29 +40,27 @@ export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   const fetchCart = async () => {
-  if (!user) {
-    setCart([]);
-    dispatch({ type: 'UPDATE_TOTAL_ITEMS', payload: { items: [] } }); // <- important
-    return;
-  }
-  
-  try {
-    const res = await axios.get('http://localhost:3000/api/cart', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setCart(res.data.cart);
-    dispatch({ type: 'UPDATE_TOTAL_ITEMS', payload: res.data.cart });
-  } catch (err) {
-    console.error('Error fetching cart:', err);
-    setCart([]);
-    dispatch({ type: 'UPDATE_TOTAL_ITEMS', payload: { items: [] } }); // <- en cas d’erreur
-  } finally {
-    setLoading(false);
-  }
-};
+    if (!user) {
+      setCart([]);
+      dispatch({ type: 'UPDATE_TOTAL_ITEMS', payload: { items: [] } }); 
+      return;
+    }
+    try {
+      const res = await axios.get('http://localhost:3000/api/cart', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCart(res.data.cart);
+      dispatch({ type: 'UPDATE_TOTAL_ITEMS', payload: res.data.cart });
+    } catch (err) {
+      setCart([]);
+      dispatch({ type: 'UPDATE_TOTAL_ITEMS', payload: { items: [] } }); 
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addToCart = async (productId, quantity, selectedColor, selectedSize) => {
-    if (!user) return false; // utilisé pour déclencher la pop-up
+    if (!user) return false; 
     try {
       await axios.post('http://localhost:3000/api/cart', { productId, quantity, selectedColor, selectedSize }, {
         headers: { Authorization: `Bearer ${token}` },
@@ -67,7 +68,6 @@ export const CartProvider = ({ children }) => {
       fetchCart();
       return true;
     } catch (err) {
-      console.error('Add to cart failed:', err);
       return false;
     }
   };
@@ -82,31 +82,27 @@ export const CartProvider = ({ children }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     fetchCart();
-
   } catch (err) {
     console.error('Increase one failed:', err);
   }
 };
 
   const reduceOne = async (productId, selectedColor, selectedSize) => {
-    
-    console.log('REDUCE, product, color, size, token', productId, selectedColor, selectedSize, token);
-  try {
-    await axios.patch('http://localhost:3000/api/cart/reduce-one', {
-      productId,
-      selectedColor: selectedColor?._id || selectedColor,
-      selectedSize: selectedSize?._id || selectedSize
-    }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    fetchCart();
-  } catch (err) {
-    console.error('Reduce one failed:', err);
-  }
-};
+    try {
+      await axios.patch('http://localhost:3000/api/cart/reduce-one', {
+        productId,
+        selectedColor: selectedColor?._id || selectedColor,
+        selectedSize: selectedSize?._id || selectedSize
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchCart();
+    } catch (err) {
+      console.error('Reduce one failed:', err);
+    }
+  };
 
   const removeItem = async (productId, selectedColor, selectedSize) => {
-  console.log('DELETE, product, color, size, token', productId, selectedColor, selectedSize, token);
   try {
     await axios.delete(`http://localhost:3000/api/cart/${productId}`, {
       headers: { Authorization: `Bearer ${token}` },

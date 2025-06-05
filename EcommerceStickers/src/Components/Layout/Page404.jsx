@@ -1,5 +1,9 @@
-// src/Pages/NotFound.jsx
 import { Link } from 'react-router-dom';
+
+/**
+ * 
+ * @returns A simple 404 error page component that displays an error message if URL is not valid.
+ */
 
 const Page404 = () => (
     <div className="text-center mt-5 p-4">

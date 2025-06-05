@@ -7,6 +7,11 @@ import ProductListPage from './Components/Product/ProductListPage';
 import ProductDetail from './Components/Product/ProductDetail';
 import Page404 from './Components/Layout/Page404'; 
 
+/**
+* Renders the global layout including the Header on each page and sets up routing
+* for the main pages: home (with Banner and CategoriesOverview), product list,
+* product detail, and a 404 page for unmatched routes.
+ */
 
 function App() {
   return (
@@ -21,7 +26,6 @@ function App() {
         } />
         <Route path="/products" element={<ProductListPage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
-        {/* ✅ Page 404 pour toutes les autres URLs */}
         <Route path="*" element={<Page404 />} />
       </Routes>
     </>

@@ -3,6 +3,12 @@ import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 
+/**
+ * LoginPopUp component provides a modal for user login and registration.
+ * It allows users to switch between login and registration forms,
+ * handles form submission, and displays success or error messages.
+ */
+
 const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
   const { login } = useAuth(); 
   const [isLogin, setIsLogin] = useState(true);
@@ -10,30 +16,30 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Données pour login et register
   const [formData, setFormData] = useState({
     username: '', name: '', email: '', password: '', passwordConfirm: '',
     phone: '', address: ''
   });
+
   useEffect(() => {
-  if (show) {
-    setFormData({
-      username: '',
-      name: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      phone: '',
-      address: ''
-    });
-    setError(null);
-    setSuccess(null);
-    setIsLogin(true);
-  }
-}, [show]);
+    if (show) {
+      setFormData({
+        username: '',
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        phone: '',
+        address: ''
+      });
+      setError(null);
+      setSuccess(null);
+      setIsLogin(true);
+    }
+  }, [show]);
+
   const url = 'https://res.cloudinary.com/dxxpja0jo/image/upload/v1748548762/default-user_htxiic.png';
-
-
+  
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -43,23 +49,16 @@ const LoginPopUp = ({ show, handleClose, onLoginSuccess }) => {
     setLoading(true);
     setError(null);
     setSuccess(null);
-
-    
-
     try {
       if (isLogin) {
-        // 🔐 LOGIN
         const res = await axios.post('http://localhost:3000/api/auth/login', {
           email: formData.email,
           password: formData.password
         });
-        console.log('Login response:', res.data); 
-
-        login(res.data.user, res.data.tokens.accessToken); // ✅ met à jour AuthContext
+        login(res.data.user, res.data.tokens.accessToken); 
         setSuccess('Logged in!');
-        onLoginSuccess?.(); // ou redirection
+        onLoginSuccess?.();
       } else {
-        // 📝 REGISTER
         const data = new FormData();
         data.append('username', formData.username);
         data.append('name', formData.name);

@@ -1,4 +1,4 @@
-/* NAVIGATION */
+/* NAV */
 .border-pink {
   border: 2px solid #c04381 !important; 
 }
@@ -70,7 +70,7 @@
   border-color: #e83e8c !important;
 }
 
-/* PRODUCT CARD */
+/* PRODUCT CART */
 .hover-border {
   transition: border-color 0.1s ease-in-out;
 }
@@ -78,6 +78,7 @@
   border: 1px solid #c04381 !important;
 }
 
+/* ALERT */
 .floating-alert {
   position: fixed !important;
   top: 20px !important;
@@ -91,6 +92,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* CART ICON */
 .cartIcon {
   position: absolute !important;
   top: -6px !important;

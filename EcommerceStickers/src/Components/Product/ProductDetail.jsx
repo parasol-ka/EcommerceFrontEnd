@@ -4,12 +4,19 @@ import axios from 'axios';
 import { Container, Row, Col, Carousel, Spinner, Alert } from 'react-bootstrap';
 import ProductItemForm from './ProductItemForm';
 
+/**
+ * ProductDetail fetches and displays details of a single product on a separate page.
+ * It includes a carousel for product images, product information,
+ * and a form to add the product to the cart.
+ * 
+ */
+
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0); // pour le carousel
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     axios.get(`http://localhost:3000/api/product/${id}`)
@@ -34,7 +41,6 @@ const ProductDetail = () => {
     <Container className="my-5">
       <Row className="g-4">
         <Col md={6}>
-          {/* Carousel principal */}
           <Carousel
             activeIndex={activeIndex}
             onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
@@ -52,7 +58,6 @@ const ProductDetail = () => {
             ))}
           </Carousel>
 
-          {/* Thumbnails */}
           <Row className="mt-3 g-2 justify-content-center">
             {allImages.map((img, idx) => (
               <Col xs={3} sm={2} key={idx}>
@@ -81,7 +86,6 @@ const ProductDetail = () => {
           <p><strong>Size:</strong> {product.sizes.map(s => s.size).join(', ')}</p>
           <p><strong>Color:</strong> {product.colors.map(c => c.color).join(', ')}</p>
 
-          {/* Formulaire d’ajout au panier */}
           <div >
             <ProductItemForm productId={product._id} maxQuantity={product.quantity} colors={product.colors} sizes={product.sizes} />
           </div>

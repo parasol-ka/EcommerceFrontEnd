@@ -1,6 +1,5 @@
-import React from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
-import bannerImage from '../../assets/banner.webp'; // adapte le chemin selon ton projet
+import bannerImage from '../../assets/banner.webp'; 
 
 const Banner = () => {
   return (
