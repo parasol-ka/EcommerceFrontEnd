@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Spinner, Alert, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom'; // 💡

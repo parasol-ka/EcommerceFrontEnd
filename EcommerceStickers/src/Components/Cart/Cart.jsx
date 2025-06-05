@@ -12,7 +12,6 @@ const Cart = ({ show, handleClose }) => {
   const { showAlert } = useFloatingAlert();
   const { token } = useAuth();
 
-
   // Récupération des détails des produits via leurs ID
   useEffect(() => {
     const fetchProducts = async () => {

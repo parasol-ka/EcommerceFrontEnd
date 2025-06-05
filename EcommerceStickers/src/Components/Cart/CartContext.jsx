@@ -58,7 +58,6 @@ export const CartProvider = ({ children }) => {
   }
 };
 
-
   const addToCart = async (productId, quantity, selectedColor, selectedSize) => {
     if (!user) return false; // utilisé pour déclencher la pop-up
     try {
